@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+    <h1 class="mt-3">Search Results</h1>
+    <p>Showing results for "{{ query }}"</p>
+    
+    {% if results %}
+        <ul>
+            {% for tweet in results %}
+                <li>
+                    <strong>{{ tweet.user.username }}</strong>: {{ tweet.text }}
+                    {% if tweet.photo %}
+                        <br><img src="{{ tweet.photo.url }}" alt="Tweet photo" style="max-width: 200px;">
+                    {% endif %}
+                    <br><small>Created at: {{ tweet.created_at }}</small>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No results found.</p>
+    {% endif %}
+    
+    {% comment %} <a href="{% url 'home' %}">Back to home</a> {% endcomment %}
+{% endblock content %}

@@ -3,7 +3,7 @@ from .models import Tweet
 from .forms import TweetForm,userRegistrationForm
 from django.shortcuts import get_object_or_404,redirect
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login
+from django.contrib.auth import login,logout
 def index(request):
     return render(request, 'index.html')
 
@@ -61,3 +61,17 @@ def register(request):
         form = userRegistrationForm()
 
     return render(request, 'registration/register.html', {'form': form})
+
+
+def search_view(request):
+    query = request.GET.get('q', '')
+    if query:
+        results = Tweet.objects.filter(text__icontains=query)
+    else:
+        results = Tweet.objects.none()  # No results if no query
+    return render(request, 'search.html', {'results': results, 'query': query})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('tweet_list.html')  # or any other URL
